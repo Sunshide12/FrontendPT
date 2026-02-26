@@ -75,7 +75,11 @@ function OrdersPage() {
   };
 
   const handleDelete = async id => {
-    if (!confirm("¿Eliminar este pedido? El stock será restaurado.")) return;
+    const order = orders.find(o => o.id === id);
+
+    const message = order?.status === "pending" ? "¿Eliminar este pedido? El stock será restaurado." : "¿Eliminar este pedido? Esta acción no se puede deshacer.";
+
+    if (!confirm(message)) return;
     try {
       await removeOrder(id);
     } catch (err) {
