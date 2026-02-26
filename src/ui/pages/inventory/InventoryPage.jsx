@@ -4,18 +4,27 @@ import PageHeader from "../../components/PageHeader";
 import SearchBar from "../../components/SearchBar";
 import Pagination from "../../components/Pagination";
 import Modal from "../../components/Modal";
+import Toast from "../../components/Toast";
+import { useToast } from "../../../application/hooks/useToast";
 
 function InventoryPage() {
   const { products, pagination, loading, search, setSearch, page, setPage, adjust } = useInventory();
+  const { toast, showToast, hideToast } = useToast();
 
   const [adjustingProduct, setAdjustingProduct] = useState(null);
   const [tempStock, setTempStock] = useState("");
 
   const handleAdjust = async () => {
     if (tempStock === "" || isNaN(tempStock) || Number(tempStock) < 0) return;
-    await adjust(adjustingProduct.id, Number(tempStock));
-    setAdjustingProduct(null);
-    setTempStock("");
+    try {
+      await adjust(adjustingProduct.id, Number(tempStock));
+      setAdjustingProduct(null);
+      setTempStock("");
+      showToast("Stock actualizado correctamente");
+    } catch (err) {
+      const msg = err.response?.data?.message ?? "Error al ajustar stock";
+      showToast(msg, "error");
+    }
   };
 
   return (
@@ -90,6 +99,8 @@ function InventoryPage() {
           </div>
         </Modal>
       )}
+
+      {toast && <Toast message={toast.message} type={toast.type} onClose={hideToast} />}
     </div>
   );
 }

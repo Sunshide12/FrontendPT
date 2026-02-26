@@ -3,6 +3,8 @@ import { useCategories } from "../../../application/hooks/useCategories";
 import PageHeader from "../../components/PageHeader";
 import Pagination from "../../components/Pagination";
 import Modal from "../../components/Modal";
+import Toast from "../../components/Toast";
+import { useToast } from "../../../application/hooks/useToast";
 
 function CategoriesPage() {
   const { categories, paginatedCategories, catPagination, setCatPage, loading, addCategory, editCategory, removeCategory } = useCategories();
@@ -11,6 +13,7 @@ function CategoriesPage() {
   const [createError, setCreateError] = useState("");
 
   const [showModal, setShowModal] = useState(false);
+  const { toast, showToast, hideToast } = useToast();
   const [editingCategory, setEditingCategory] = useState(null);
   const [editingName, setEditingName] = useState("");
   const [editError, setEditError] = useState("");
@@ -21,8 +24,11 @@ function CategoriesPage() {
       await addCategory(newName.trim());
       setNewName("");
       setCreateError("");
+      showToast("Categoría creada correctamente");
     } catch (err) {
-      setCreateError(err.response?.data?.message ?? "Error al crear categoría");
+      const msg = err.response?.data?.message ?? "Error al crear categoría";
+      setCreateError(msg);
+      showToast(msg, "error");
     }
   };
 
@@ -38,8 +44,11 @@ function CategoriesPage() {
     try {
       await editCategory(editingCategory.id, editingName.trim());
       setShowModal(false);
+      showToast("Categoría actualizada correctamente");
     } catch (err) {
-      setEditError(err.response?.data?.message ?? "Error al editar categoría");
+      const msg = err.response?.data?.message ?? "Error al editar categoría";
+      setEditError(msg);
+      showToast(msg, "error");
     }
   };
 
@@ -47,8 +56,10 @@ function CategoriesPage() {
     if (!confirm("¿Eliminar esta categoría?")) return;
     try {
       await removeCategory(id);
+      showToast("Categoría eliminada correctamente");
     } catch (err) {
-      alert(err.response?.data?.message ?? "No se pudo eliminar");
+      const msg = err.response?.data?.message ?? "No se pudo eliminar";
+      showToast(msg, "error");
     }
   };
 
@@ -117,6 +128,8 @@ function CategoriesPage() {
           </div>
         </Modal>
       )}
+
+      {toast && <Toast message={toast.message} type={toast.type} onClose={hideToast} />}
     </div>
   );
 }
