@@ -5,6 +5,8 @@ export function useCategories() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [catPage, setCatPage] = useState(1);
+  const itemsPerPage = 10;
 
   const fetchCategories = async () => {
     try {
@@ -37,5 +39,14 @@ export function useCategories() {
     setCategories(prev => prev.filter(c => c.id !== id));
   };
 
-  return { categories, loading, error, addCategory, editCategory, removeCategory };
+  // Pagino localmente porque el endpoint devuelve todas las categorías
+  // y se necesitan completas para el dropdown de productos
+  const paginatedCategories = categories.slice((catPage - 1) * itemsPerPage, catPage * itemsPerPage);
+
+  const catPagination = {
+    current_page: catPage,
+    last_page: Math.ceil(categories.length / itemsPerPage),
+  };
+
+  return { categories, paginatedCategories, catPagination, setCatPage, loading, error, addCategory, editCategory, removeCategory };
 }
