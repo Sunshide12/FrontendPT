@@ -93,17 +93,17 @@ function ClientsPage() {
                 </td>
               </tr>
             ) : (
-              clients.map(c => (
-                <tr key={c.id} className="border-b border-gray-50 hover:bg-gray-50/50">
-                  <td className="px-4 py-3 text-gray-400">{c.id}</td>
-                  <td className="px-4 py-3 text-gray-800">{c.name}</td>
-                  <td className="px-4 py-3 text-gray-500">{c.email}</td>
-                  <td className="px-4 py-3 text-gray-500">{c.phone}</td>
+              clients.map(client => (
+                <tr key={client.id} className="border-b border-gray-50 hover:bg-gray-50/50">
+                  <td className="px-4 py-3 text-gray-400">{client.id}</td>
+                  <td className="px-4 py-3 text-gray-800">{client.name}</td>
+                  <td className="px-4 py-3 text-gray-500">{client.email}</td>
+                  <td className="px-4 py-3 text-gray-500">{client.phone}</td>
                   <td className="px-4 py-3 flex gap-2">
-                    <button onClick={() => openEdit(c)} className="px-3 py-1 text-xs border border-primary text-primary rounded hover:bg-primary-light transition-colors">
+                    <button onClick={() => openEdit(client)} className="px-3 py-1 text-xs border border-primary text-primary rounded hover:bg-primary-light transition-colors">
                       Editar
                     </button>
-                    <button onClick={() => handleDelete(c.id)} className="px-3 py-1 text-xs border border-red-300 text-red-400 rounded hover:bg-red-50 transition-colors">
+                    <button onClick={() => handleDelete(client.id)} className="px-3 py-1 text-xs border border-red-300 text-red-400 rounded hover:bg-red-50 transition-colors">
                       Eliminar
                     </button>
                   </td>

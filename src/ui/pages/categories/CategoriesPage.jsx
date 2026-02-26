@@ -85,15 +85,15 @@ function CategoriesPage() {
                 </td>
               </tr>
             ) : (
-              paginatedCategories.map(c => (
-                <tr key={c.id} className="border-b border-gray-50 hover:bg-gray-50/50">
-                  <td className="px-4 py-3 text-gray-400">{c.id}</td>
-                  <td className="px-4 py-3 text-gray-800">{c.name}</td>
+              paginatedCategories.map(category => (
+                <tr key={category.id} className="border-b border-gray-50 hover:bg-gray-50/50">
+                  <td className="px-4 py-3 text-gray-400">{category.id}</td>
+                  <td className="px-4 py-3 text-gray-800">{category.name}</td>
                   <td className="px-4 py-3 flex gap-2">
-                    <button onClick={() => openEdit(c)} className="px-3 py-1 text-xs border border-primary text-primary rounded hover:bg-primary-light transition-colors">
+                    <button onClick={() => openEdit(category)} className="px-3 py-1 text-xs border border-primary text-primary rounded hover:bg-primary-light transition-colors">
                       Editar
                     </button>
-                    <button onClick={() => handleDelete(c.id)} className="px-3 py-1 text-xs border border-red-300 text-red-400 rounded hover:bg-red-50 transition-colors">
+                    <button onClick={() => handleDelete(category.id)} className="px-3 py-1 text-xs border border-red-300 text-red-400 rounded hover:bg-red-50 transition-colors">
                       Eliminar
                     </button>
                   </td>

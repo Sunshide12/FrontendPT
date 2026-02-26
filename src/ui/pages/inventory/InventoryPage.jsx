@@ -50,19 +50,19 @@ function InventoryPage() {
                 </td>
               </tr>
             ) : (
-              products.map(p => (
-                <tr key={p.id} className="border-b border-gray-50 hover:bg-gray-50/50">
-                  <td className="px-4 py-3 text-gray-400">{p.id}</td>
-                  <td className="px-4 py-3 text-gray-800">{p.name}</td>
-                  <td className="px-4 py-3 text-gray-500">{p.category?.name ?? "—"}</td>
+              products.map(product => (
+                <tr key={product.id} className="border-b border-gray-50 hover:bg-gray-50/50">
+                  <td className="px-4 py-3 text-gray-400">{product.id}</td>
+                  <td className="px-4 py-3 text-gray-800">{product.name}</td>
+                  <td className="px-4 py-3 text-gray-500">{product.category?.name ?? "—"}</td>
                   <td className="px-4 py-3">
-                    <span className="bg-primary-light text-primary text-xs font-semibold px-2 py-1 rounded">{p.stock}</span>
+                    <span className="bg-primary-light text-primary text-xs font-semibold px-2 py-1 rounded">{product.stock}</span>
                   </td>
                   <td className="px-4 py-3">
                     <button
                       onClick={() => {
-                        setAdjustingProduct(p);
-                        setTempStock(p.stock);
+                        setAdjustingProduct(product);
+                        setTempStock(product.stock);
                       }}
                       className="px-3 py-1 text-xs border border-primary text-primary rounded hover:bg-primary-light transition-colors">
                       Ajustar stock
