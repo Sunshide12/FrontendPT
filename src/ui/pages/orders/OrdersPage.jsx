@@ -6,6 +6,8 @@ import PageHeader from "../../components/PageHeader";
 import SearchBar from "../../components/SearchBar";
 import Pagination from "../../components/Pagination";
 import Modal from "../../components/Modal";
+import Toast from "../../components/Toast";
+import { useToast } from "../../../application/hooks/useToast";
 
 // Colores del badge según el estado del pedido
 const statusConfig = {
@@ -19,7 +21,8 @@ function OrdersPage() {
 
   // Necesitamos todos los clientes y productos para los dropdowns del formulario
   const { clients = [], allClients = [] } = useClients();
-  const { products = [] } = useProducts();
+  const { allProducts = [] } = useProducts();
+  const { toast, showToast, hideToast } = useToast();
 
   const [showModal, setShowModal] = useState(false);
   const [clientId, setClientId] = useState("");
@@ -28,7 +31,7 @@ function OrdersPage() {
 
   // Calculamos el total en tiempo real sumando precio * cantidad de cada item
   const total = items.reduce((accumulator, item) => {
-    const product = products.find(p => p.id === Number(item.productId));
+    const product = allProducts.find(p => p.id === Number(item.productId));
     if (!product || !item.quantity) return accumulator;
     return accumulator + parseFloat(product.price) * Number(item.quantity);
   }, 0);
@@ -68,22 +71,26 @@ function OrdersPage() {
         products: items.map(i => ({ id: Number(i.productId), quantity: Number(i.quantity) })),
       });
       setShowModal(false);
+      showToast("Pedido creado correctamente");
     } catch (err) {
       // El backend devuelve el mensaje de stock insuficiente directamente
-      setFormError(err.response?.data?.message ?? "Error al crear pedido");
+      const msg = err.response?.data?.message ?? "Error al crear pedido";
+      setFormError(msg);
+      showToast(msg, "error");
     }
   };
 
   const handleDelete = async id => {
-    const order = orders.find(o => o.id === id);
-
+    const order = orders.find(order => order.id === id);
     const message = order?.status === "pending" ? "¿Eliminar este pedido? El stock será restaurado." : "¿Eliminar este pedido? Esta acción no se puede deshacer.";
 
     if (!confirm(message)) return;
     try {
       await removeOrder(id);
+      showToast("Pedido eliminado correctamente");
     } catch (err) {
-      alert(err.response?.data?.message ?? "No se pudo eliminar");
+      const msg = err.response?.data?.message ?? "No se pudo eliminar";
+      showToast(msg, "error");
     }
   };
 
@@ -189,7 +196,7 @@ function OrdersPage() {
                   <div key={index} className="flex gap-2 items-center">
                     <select className="input flex-1" value={item.productId} onChange={e => updateItem(index, "productId", e.target.value)}>
                       <option value="">Producto</option>
-                      {products.map(p => (
+                      {allProducts.map(p => (
                         <option key={p.id} value={p.id}>
                           {p.name} (stock: {p.stock})
                         </option>
@@ -224,6 +231,8 @@ function OrdersPage() {
           </div>
         </Modal>
       )}
+
+      {toast && <Toast message={toast.message} type={toast.type} onClose={hideToast} />}
     </div>
   );
 }

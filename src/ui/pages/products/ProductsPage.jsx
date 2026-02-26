@@ -6,9 +6,13 @@ import SearchBar from "../../components/SearchBar";
 import Pagination from "../../components/Pagination";
 import Modal from "../../components/Modal";
 
+import Toast from "../../components/Toast";
+import { useToast } from "../../../application/hooks/useToast";
+
 function ProductsPage() {
   const { products, pagination, loading, search, setSearch, setPage, addProduct, editProduct, removeProduct } = useProducts();
   const { categories } = useCategories();
+  const { toast, showToast, hideToast } = useToast();
 
   const [showModal, setShowModal] = useState(false);
   const [editing, setEditing] = useState(null); // null = creando, objeto = editando
@@ -42,12 +46,15 @@ function ProductsPage() {
     try {
       if (editing) {
         await editProduct(editing.id, form);
+        showToast("Producto actualizado correctamente");
       } else {
         await addProduct(form);
+        showToast("Producto creado correctamente");
       }
       setShowModal(false);
     } catch (err) {
       setFormError(err.response?.data?.message ?? "Error al guardar");
+      showToast(err.response?.data?.message ?? "Error al guardar", "error");
     }
   };
 
@@ -146,6 +153,8 @@ function ProductsPage() {
           </div>
         </Modal>
       )}
+
+      {toast && <Toast message={toast.message} type={toast.type} onClose={hideToast} />}
     </div>
   );
 }

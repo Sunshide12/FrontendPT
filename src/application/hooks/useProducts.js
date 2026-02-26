@@ -3,6 +3,7 @@ import * as productService from "../../infrastructure/productService";
 
 export function useProducts() {
   const [products, setProducts] = useState([]);
+  const [allProducts, setAllProducts] = useState([]);
   const [pagination, setPagination] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -27,6 +28,10 @@ export function useProducts() {
     fetchProducts();
   }, [fetchProducts]);
 
+  useEffect(() => {
+    productService.getAllProducts().then(setAllProducts);
+  }, []);
+
   const addProduct = async product => {
     await productService.createProduct(product);
     fetchProducts();
@@ -44,6 +49,7 @@ export function useProducts() {
 
   return {
     products,
+    allProducts,
     pagination,
     loading,
     error,

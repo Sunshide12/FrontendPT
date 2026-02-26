@@ -4,6 +4,8 @@ import PageHeader from "../../components/PageHeader";
 import SearchBar from "../../components/SearchBar";
 import Pagination from "../../components/Pagination";
 import Modal from "../../components/Modal";
+import Toast from "../../components/Toast";
+import { useToast } from "../../../application/hooks/useToast";
 
 function ClientsPage() {
   const { clients, pagination, loading, search, setSearch, page, setPage, addClient, editClient, removeClient } = useClients();
@@ -12,6 +14,7 @@ function ClientsPage() {
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState({ name: "", email: "", phone: "" });
   const [formError, setFormError] = useState("");
+  const { toast, showToast, hideToast } = useToast();
 
   const openCreate = () => {
     setEditing(null);
@@ -35,12 +38,16 @@ function ClientsPage() {
     try {
       if (editing) {
         await editClient(editing.id, form);
+        showToast("Cliente actualizado correctamente");
       } else {
         await addClient(form);
+        showToast("Cliente creado correctamente");
       }
       setShowModal(false);
     } catch (err) {
-      setFormError(err.response?.data?.message ?? "Error al guardar");
+      const msg = err.response?.data?.message ?? "Error al guardar";
+      setFormError(msg);
+      showToast(msg, "error");
     }
   };
 
@@ -48,8 +55,10 @@ function ClientsPage() {
     if (!confirm("¿Eliminar este cliente?")) return;
     try {
       await removeClient(id);
+      showToast("Cliente eliminado correctamente");
     } catch (err) {
-      alert(err.response?.data?.message ?? "No se pudo eliminar");
+      const msg = err.response?.data?.message ?? "No se pudo eliminar";
+      showToast(msg, "error");
     }
   };
 
@@ -129,6 +138,8 @@ function ClientsPage() {
           </div>
         </Modal>
       )}
+
+      {toast && <Toast message={toast.message} type={toast.type} onClose={hideToast} />}
     </div>
   );
 }
