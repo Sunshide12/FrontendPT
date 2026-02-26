@@ -8,6 +8,7 @@ export function useClients() {
   const [error, setError] = useState(null);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
+  const [allClients, setAllClients] = useState([]);
 
   const fetchClients = useCallback(async () => {
     try {
@@ -26,6 +27,10 @@ export function useClients() {
     fetchClients();
   }, [fetchClients]);
 
+  useEffect(() => {
+    clientService.getAllClients().then(setAllClients);
+  }, []);
+
   const addClient = async client => {
     await clientService.createClient(client);
     fetchClients();
@@ -43,6 +48,7 @@ export function useClients() {
 
   return {
     clients,
+    allClients,
     pagination,
     loading,
     error,

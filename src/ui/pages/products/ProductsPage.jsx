@@ -101,18 +101,18 @@ function ProductsPage() {
                 </td>
               </tr>
             ) : (
-              products.map(p => (
-                <tr key={p.id} className="border-b border-gray-50 hover:bg-gray-50/50">
-                  <td className="px-4 py-3 text-gray-400">{p.id}</td>
-                  <td className="px-4 py-3 text-gray-800">{p.name}</td>
-                  <td className="px-4 py-3">${parseFloat(p.price).toFixed(2)}</td>
-                  <td className="px-4 py-3">{p.stock}</td>
-                  <td className="px-4 py-3 text-gray-500">{p.category?.name ?? "—"}</td>
+              products.map(product => (
+                <tr key={product.id} className="border-b border-gray-50 hover:bg-gray-50/50">
+                  <td className="px-4 py-3 text-gray-400">{product.id}</td>
+                  <td className="px-4 py-3 text-gray-800">{product.name}</td>
+                  <td className="px-4 py-3">${parseFloat(product.price).toFixed(2)}</td>
+                  <td className="px-4 py-3">{product.stock}</td>
+                  <td className="px-4 py-3 text-gray-500">{product.category?.name ?? "—"}</td>
                   <td className="px-4 py-3 flex gap-2">
-                    <button onClick={() => openEdit(p)} className="px-3 py-1 text-xs border border-primary text-primary rounded hover:bg-primary-light transition-colors">
+                    <button onClick={() => openEdit(product)} className="px-3 py-1 text-xs border border-primary text-primary rounded hover:bg-primary-light transition-colors">
                       Editar
                     </button>
-                    <button onClick={() => handleDelete(p.id)} className="px-3 py-1 text-xs border border-red-300 text-red-400 rounded hover:bg-red-50 transition-colors">
+                    <button onClick={() => handleDelete(product.id)} className="px-3 py-1 text-xs border border-red-300 text-red-400 rounded hover:bg-red-50 transition-colors">
                       Eliminar
                     </button>
                   </td>
