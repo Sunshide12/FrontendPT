@@ -11,15 +11,6 @@ Aplicación web que consume la API REST del backend Laravel para gestionar produ
 ![Axios](https://img.shields.io/badge/Axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white)
 ![NodeJS](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
 
-| Tecnología | Versión |
-|---|---|
-| React | 19.2.0 |
-| Vite | 7.3.1 |
-| Tailwind CSS | 3.4.19 |
-| React Router DOM | 7.13.1 |
-| Axios | 1.13.5 |
-| Node.js | >= 18 |
-
 ## Requisitos
 
 - Node.js 18 o superior
