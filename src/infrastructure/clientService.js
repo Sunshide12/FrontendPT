@@ -7,6 +7,11 @@ export const getClients = async (page = 1, search = "") => {
   return data;
 };
 
+export const getAllClients = async () => {
+  const { data } = await api.get("/clients/all");
+  return data.clients;
+};
+
 export const createClient = async client => {
   const { data } = await api.post("/clients", client);
   return data.client;
