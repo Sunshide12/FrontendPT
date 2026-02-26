@@ -10,6 +10,11 @@ export const getProducts = async (page = 1, search = "", category_id = "") => {
   return data;
 };
 
+export const getAllProducts = async () => {
+  const { data } = await api.get("/products/all");
+  return data.products;
+};
+
 export const createProduct = async product => {
   const { data } = await api.post("/products", product);
   return data.product;
